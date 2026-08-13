@@ -6,11 +6,6 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-      - name: Check out integration test repository
-        uses: actions/checkout@v4
-        with:
-          repository: openmf/ph-ee-connector-integration-test
-          path: ph-ee-connector-integration-test
       # The runner default JDK is not 21; without this step the build fails on
       # `sourceCompatibility = 21` with "invalid source release: 21".
       - name: Set up JDK 21
