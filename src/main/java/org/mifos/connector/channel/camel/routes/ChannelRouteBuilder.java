@@ -51,6 +51,7 @@ import org.json.JSONObject;
 import org.mifos.connector.channel.camel.config.Client;
 import org.mifos.connector.channel.camel.config.ClientProperties;
 import org.mifos.connector.channel.config.BpmnFlowProperties;
+import org.mifos.connector.channel.config.OperationsProperties;
 import org.mifos.connector.channel.gsma_api.GsmaP2PResponseDto;
 import org.mifos.connector.channel.model.OpsTxnResponseDTO;
 import org.mifos.connector.channel.model.ValidationResponseDTO;
@@ -119,10 +120,7 @@ public class ChannelRouteBuilder extends ErrorHandlerRouteBuilder {
     String destinationDfspId;
 
     public ChannelRouteBuilder(@Value("#{'${dfspids}'.split(',')}") List<String> dfspIds, BpmnFlowProperties bpmnFlows,
-            @Value("${rest.authorization.host}") String restAuthHost, @Value("${operations.url}") String operationsUrl,
-            @Value("${operations.auth-enabled}") Boolean operationsAuthEnabled,
-            @Value("${operations.endpoint.transfers}") String transfersEndpoint,
-            @Value("${operations.endpoint.transactionReq}") String transactionEndpoint,
+            OperationsProperties operations, @Value("${rest.authorization.host}") String restAuthHost,
             @Value("${mpesa.notification.success.enabled}") Boolean isNotificationSuccessServiceEnabled,
             @Value("${mpesa.notification.failure.enabled}") Boolean isNotificationFailureServiceEnabled, @Value("${timer}") String timer,
             @Value("${rest.authorization.header}") String restAuthHeader, @Value("${destination.dfspid}") String destinationDfspId,
@@ -143,14 +141,14 @@ public class ChannelRouteBuilder extends ErrorHandlerRouteBuilder {
         this.clientProperties = clientProperties;
         this.restTemplate = restTemplate;
         this.restAuthHost = restAuthHost;
-        this.operationsUrl = operationsUrl;
-        this.transfersEndpoint = transfersEndpoint;
-        this.transactionEndpoint = transactionEndpoint;
+        this.operationsUrl = operations.url();
+        this.transfersEndpoint = operations.endpoint().transfers();
+        this.transactionEndpoint = operations.endpoint().transactionReq();
         this.isNotificationSuccessServiceEnabled = isNotificationSuccessServiceEnabled;
         this.isNotificationFailureServiceEnabled = isNotificationFailureServiceEnabled;
         this.timer = timer;
         this.restAuthHeader = restAuthHeader;
-        this.operationsAuthEnabled = operationsAuthEnabled;
+        this.operationsAuthEnabled = operations.authEnabled();
         this.destinationDfspId = destinationDfspId;
     }
 
