@@ -7,13 +7,13 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
+import org.mifos.connector.channel.config.ChannelRedisProperties;
 import org.mifos.connector.channel.interceptor.config.RedisRouteConfig;
 import org.mifos.connector.gsmastub.api.ApiOriginFilter;
 import org.mifos.connector.gsmastub.configuration.CustomInstantDeserializer;
 import org.mifos.connector.gsmastub.configuration.LocalDateConverter;
 import org.mifos.connector.gsmastub.configuration.LocalDateTimeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
@@ -41,8 +41,11 @@ public class ChannelConnectorApplication {
     @Autowired
     RedisRouteConfig redisRouteConfig;
 
-    @Value("${redis.database}")
-    private int redisDatabase;
+    private final int redisDatabase;
+
+    public ChannelConnectorApplication(ChannelRedisProperties redisProperties) {
+        this.redisDatabase = redisProperties.database();
+    }
 
     @Bean
     public ObjectMapper objectMapper() {
