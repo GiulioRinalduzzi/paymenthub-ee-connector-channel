@@ -25,6 +25,7 @@ import org.apache.camel.model.dataformat.JsonLibrary;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mifos.connector.channel.config.BpmnFlowProperties;
+import org.mifos.connector.channel.config.DestinationProperties;
 import org.mifos.connector.channel.properties.TenantImplementation;
 import org.mifos.connector.channel.properties.TenantImplementationProperties;
 import org.mifos.connector.channel.zeebe.ZeebeProcessStarter;
@@ -69,7 +70,7 @@ public class GSMAChannelRouteBuilder extends ErrorHandlerRouteBuilder {
     TenantImplementationProperties tenantImplementationProperties;
 
     public GSMAChannelRouteBuilder(@Value("#{'${dfspids}'.split(',')}") List<String> dfspIds, BpmnFlowProperties bpmnFlows,
-            @Value("${destination.dfspid}") String payeeDfspid, ZeebeClient zeebeClient, ZeebeProcessStarter zeebeProcessStarter,
+            DestinationProperties destination, ZeebeClient zeebeClient, ZeebeProcessStarter zeebeProcessStarter,
             ObjectMapper objectMapper) {
         super.configure();
         this.baseTransaction = bpmnFlows.gsmaBaseTransaction();
@@ -83,7 +84,7 @@ public class GSMAChannelRouteBuilder extends ErrorHandlerRouteBuilder {
         this.zeebeClient = zeebeClient;
         this.dfspIds = dfspIds;
         this.objectMapper = objectMapper;
-        this.payeeDfspid = payeeDfspid;
+        this.payeeDfspid = destination.dfspid();
     }
 
     @Override

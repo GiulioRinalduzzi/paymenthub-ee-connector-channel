@@ -51,7 +51,10 @@ import org.json.JSONObject;
 import org.mifos.connector.channel.camel.config.Client;
 import org.mifos.connector.channel.camel.config.ClientProperties;
 import org.mifos.connector.channel.config.BpmnFlowProperties;
+import org.mifos.connector.channel.config.DestinationProperties;
+import org.mifos.connector.channel.config.MpesaNotificationProperties;
 import org.mifos.connector.channel.config.OperationsProperties;
+import org.mifos.connector.channel.config.RestAuthorizationProperties;
 import org.mifos.connector.channel.gsma_api.GsmaP2PResponseDto;
 import org.mifos.connector.channel.model.OpsTxnResponseDTO;
 import org.mifos.connector.channel.model.ValidationResponseDTO;
@@ -120,11 +123,9 @@ public class ChannelRouteBuilder extends ErrorHandlerRouteBuilder {
     String destinationDfspId;
 
     public ChannelRouteBuilder(@Value("#{'${dfspids}'.split(',')}") List<String> dfspIds, BpmnFlowProperties bpmnFlows,
-            OperationsProperties operations, @Value("${rest.authorization.host}") String restAuthHost,
-            @Value("${mpesa.notification.success.enabled}") Boolean isNotificationSuccessServiceEnabled,
-            @Value("${mpesa.notification.failure.enabled}") Boolean isNotificationFailureServiceEnabled, @Value("${timer}") String timer,
-            @Value("${rest.authorization.header}") String restAuthHeader, @Value("${destination.dfspid}") String destinationDfspId,
-            ZeebeClient zeebeClient, ZeebeProcessStarter zeebeProcessStarter, @Autowired(required = false) AuthProcessor authProcessor,
+            OperationsProperties operations, RestAuthorizationProperties restAuthorization, MpesaNotificationProperties mpesaNotification,
+            DestinationProperties destination, @Value("${timer}") String timer, ZeebeClient zeebeClient,
+            ZeebeProcessStarter zeebeProcessStarter, @Autowired(required = false) AuthProcessor authProcessor,
             @Autowired(required = false) AuthProperties authProperties, ObjectMapper objectMapper, ClientProperties clientProperties,
             RestTemplate restTemplate) {
         super(authProcessor, authProperties);
@@ -140,16 +141,16 @@ public class ChannelRouteBuilder extends ErrorHandlerRouteBuilder {
         this.objectMapper = objectMapper;
         this.clientProperties = clientProperties;
         this.restTemplate = restTemplate;
-        this.restAuthHost = restAuthHost;
+        this.restAuthHost = restAuthorization.host();
         this.operationsUrl = operations.url();
         this.transfersEndpoint = operations.endpoint().transfers();
         this.transactionEndpoint = operations.endpoint().transactionReq();
-        this.isNotificationSuccessServiceEnabled = isNotificationSuccessServiceEnabled;
-        this.isNotificationFailureServiceEnabled = isNotificationFailureServiceEnabled;
+        this.isNotificationSuccessServiceEnabled = mpesaNotification.success().enabled();
+        this.isNotificationFailureServiceEnabled = mpesaNotification.failure().enabled();
         this.timer = timer;
-        this.restAuthHeader = restAuthHeader;
+        this.restAuthHeader = restAuthorization.header();
         this.operationsAuthEnabled = operations.authEnabled();
-        this.destinationDfspId = destinationDfspId;
+        this.destinationDfspId = destination.dfspid();
     }
 
     @Override
