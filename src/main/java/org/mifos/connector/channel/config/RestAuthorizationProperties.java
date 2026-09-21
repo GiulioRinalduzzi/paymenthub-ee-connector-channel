@@ -7,21 +7,18 @@ import org.springframework.validation.annotation.Validated;
 /**
  * The authorization server this connector talks to: {@code rest.authorization.*}.
  *
- * @param enabled
- *            whether endpoint authorization is applied at all
+ * <p>
+ * {@code rest.authorization.enabled} is not bound. The key is in the shipped {@code application.yml}, but no code in
+ * this connector has ever read it - there was no {@code @Value} for it before this change and nothing reads it now.
+ * </p>
+ *
  * @param host
- *            base URL of the authorization server, needed when enabled
+ *            base URL of the authorization server
  * @param header
- *            the Authorization header value used when asking for a token, needed when enabled
+ *            the Authorization header value used when asking for a token
  */
 
 @Validated
 @ConfigurationProperties(prefix = "rest.authorization")
-public record RestAuthorizationProperties(@NotNull Boolean enabled, @NotNull String host, @NotNull String header) {
-
-    /**
-     *
-     * @return true when authorization is off, or on and fully configured
-     */
-
+public record RestAuthorizationProperties(@NotNull String host, @NotNull String header) {
 }
