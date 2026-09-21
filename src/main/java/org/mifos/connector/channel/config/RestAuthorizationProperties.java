@@ -1,7 +1,8 @@
 package org.mifos.connector.channel.config;
 
+import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * The authorization server this connector talks to: {@code rest.authorization.*}.
@@ -14,9 +15,9 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
  *            the Authorization header value used when asking for a token, needed when enabled
  */
 
+@Validated
 @ConfigurationProperties(prefix = "rest.authorization")
-public record RestAuthorizationProperties(@DefaultValue("false") boolean enabled, @DefaultValue("") String host,
-        @DefaultValue("") String header) {
+public record RestAuthorizationProperties(@NotNull Boolean enabled, @NotNull String host, @NotNull String header) {
 
     /**
      *

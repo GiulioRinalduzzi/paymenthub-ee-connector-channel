@@ -1,7 +1,9 @@
 package org.mifos.connector.channel.config;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * Whether the connector notifies the mpesa notification service: {@code mpesa.notification.*}.
@@ -19,8 +21,9 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
  *            settings for the failure notification
  */
 
+@Validated
 @ConfigurationProperties(prefix = "mpesa.notification")
-public record MpesaNotificationProperties(@DefaultValue Success success, @DefaultValue Failure failure) {
+public record MpesaNotificationProperties(@NotNull @Valid Success success, @NotNull @Valid Failure failure) {
 
     /**
      * Success notification: {@code mpesa.notification.success.*}.
@@ -28,7 +31,7 @@ public record MpesaNotificationProperties(@DefaultValue Success success, @Defaul
      * @param enabled
      *            whether the success notification is sent
      */
-    public record Success(@DefaultValue("false") boolean enabled) {
+    public record Success(@NotNull Boolean enabled) {
     }
 
     /**
@@ -37,6 +40,6 @@ public record MpesaNotificationProperties(@DefaultValue Success success, @Defaul
      * @param enabled
      *            whether the failure notification is sent
      */
-    public record Failure(@DefaultValue("false") boolean enabled) {
+    public record Failure(@NotNull Boolean enabled) {
     }
 }

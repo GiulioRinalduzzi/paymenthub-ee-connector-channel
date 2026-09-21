@@ -1,7 +1,9 @@
 package org.mifos.connector.channel.config;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * How this connector reaches the operations service: {@code operations.*}.
@@ -14,8 +16,9 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
  *            the paths under the base URL, {@code operations.endpoint.*}
  */
 
+@Validated
 @ConfigurationProperties(prefix = "operations")
-public record OperationsProperties(String url, @DefaultValue("false") boolean authEnabled, @DefaultValue Endpoint endpoint) {
+public record OperationsProperties(@NotNull String url, @NotNull Boolean authEnabled, @NotNull @Valid Endpoint endpoint) {
 
     /**
      * Paths under the operations base URL: {@code operations.endpoint.*}.
@@ -25,6 +28,6 @@ public record OperationsProperties(String url, @DefaultValue("false") boolean au
      * @param transactionReq
      *            the transaction requests query path
      */
-    public record Endpoint(String transfers, String transactionReq) {
+    public record Endpoint(@NotNull String transfers, @NotNull String transactionReq) {
     }
 }

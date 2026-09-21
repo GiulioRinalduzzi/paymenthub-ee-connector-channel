@@ -1,7 +1,9 @@
 package org.mifos.connector.channel.config;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * The Redis instance used for idempotency, under the connector's own {@code redis.*} prefix.
@@ -31,9 +33,10 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
  *            idempotency settings, {@code redis.idempotency.*}
  */
 
+@Validated
 @ConfigurationProperties(prefix = "redis")
-public record ChannelRedisProperties(String host, int port, @DefaultValue("") String password, int database, long cacheRetencyDuration,
-        @DefaultValue Idempotency idempotency) {
+public record ChannelRedisProperties(@NotNull String host, @NotNull Integer port, @NotNull String password, @NotNull Integer database,
+        @NotNull Long cacheRetencyDuration, @NotNull @Valid Idempotency idempotency) {
 
     /**
      * Idempotency settings: {@code redis.idempotency.*}.
@@ -43,6 +46,6 @@ public record ChannelRedisProperties(String host, int port, @DefaultValue("") St
      * @param keyFormat
      *            the order of the parts that make up the Redis key
      */
-    public record Idempotency(@DefaultValue("false") boolean enabled, String keyFormat) {
+    public record Idempotency(@NotNull Boolean enabled, @NotNull String keyFormat) {
     }
 }

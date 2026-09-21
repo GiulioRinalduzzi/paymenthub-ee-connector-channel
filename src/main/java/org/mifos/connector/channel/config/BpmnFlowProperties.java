@@ -1,6 +1,8 @@
 package org.mifos.connector.channel.config;
 
+import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * The BPMN process ids this connector starts: {@code bpmn.flows.*}.
@@ -35,8 +37,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  *            the international remittance payer flow
  */
 
+@Validated
 @ConfigurationProperties(prefix = "bpmn.flows")
-public record BpmnFlowProperties(String paymentTransfer, String specialPaymentTransfer, String transactionRequest, String partyRegistration,
-        String inboundTransactionReqFlow, String gsmaBaseTransaction, String gsmaIntTransfer, String gsmaPayeeProcess,
-        String gsmaBillPayment, String gsmaLinkBasedPayment, String internationalRemittancePayee, String internationalRemittancePayer) {
+public record BpmnFlowProperties(@NotNull String paymentTransfer, @NotNull String specialPaymentTransfer,
+        @NotNull String transactionRequest, @NotNull String partyRegistration, @NotNull String inboundTransactionReqFlow,
+        @NotNull String gsmaBaseTransaction, @NotNull String gsmaIntTransfer, @NotNull String gsmaPayeeProcess,
+        @NotNull String gsmaBillPayment, @NotNull String gsmaLinkBasedPayment, @NotNull String internationalRemittancePayee,
+        @NotNull String internationalRemittancePayer) {
 }
